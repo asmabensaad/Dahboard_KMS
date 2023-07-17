@@ -1,7 +1,7 @@
 import { useState } from "react";
 //import { ProSidebar} from 'react-pro-sidebar';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-
+import { useNavigate } from 'react-router-dom';
 import 'react-pro-sidebar/dist/css/styles.css';
 import {Box,IconButton,Typography,useTheme} from '@mui/material';
 import { Link } from "react-router-dom";
@@ -22,6 +22,8 @@ import MenuOutlinedIcon from "@mui/icons-material/MenuOutlined";
 import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import { Map, SecurityUpdateOutlined } from "@mui/icons-material";
 import { LogoutOutlined } from "@mui/icons-material";
+import {Source} from '../../auth2/Index';
+import {Login}from '../../auth2/Login';
 
 const Item =({title,to,icon,selected,setSelected})=> {
   const theme=useTheme();
@@ -208,16 +210,12 @@ const Sidebar =() => {
               setSelected={setSelected}
               />
               <Item
-              title="register "
-              to="/register"
+              title="Register "
+              to="/Source"
               icon={<LoginOutlined/>}
               selected={selected}
               setSelected={setSelected}
               />
-
-
-
-
             </Box>
 
 

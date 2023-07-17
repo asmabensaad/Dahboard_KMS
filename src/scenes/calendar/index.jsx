@@ -76,8 +76,9 @@ const Calendar =() => {
 
                  </Box>
 
-
+                 
                <Box  flex='1 1 50%' ml='15px' >
+               
                 <FullCalendar 
                 heigh="75vh"
                 plugins={[
@@ -106,8 +107,9 @@ const Calendar =() => {
                     {id:"458" , title:"soon", date:"2023-06-06"},
                 ]}
                 />
-
+              
                 </Box>  
+                
 
             </Box>
 
