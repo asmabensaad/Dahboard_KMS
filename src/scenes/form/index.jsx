@@ -1,49 +1,89 @@
 import {Box,Button,TextField} from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
+import { useRef,useState,userRef,useEffect } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import instance from "../../api/axios";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+const REGISTER_URL = 'api/authenticate/register';
 const initialValues ={
-    firstName:'',
-    lastName:'',
+    username:'',
     email:'',
-    contact:'',
-    address1:'',
-    address2:''
+    ContactNumber:'', 
+    password:''
 
 };
+
 const phoneRegExp=/^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const userSchema=yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
+    username: yup.string().required("required"),
+  
     email: yup.string().email("invalid email").required("required"),
-    contact: yup
-      .string()
-      .matches(phoneRegExp, "Phone number is not valid")
-      .required("required"),
-    address1: yup.string().required("required"),
-    address2: yup.string().required("required"),
+    ContactNumber: yup
+      .string().matches(phoneRegExp, "Phone number is not valid"),
+    address1: yup.string(),
+    password:yup.string().required("required"),
+  
+    
   });
-
-
-
 
 const Form = () => {
     const isNonMobile=useMediaQuery('(min-width:600px)');
+    const userRef=useRef();
+     const errRef=useRef();
+     const [username,setUsername]=useState('');
+     const [snackbarOpen, setSnackbarOpen] = useState(false);
+     const [email,setEmail]=useState('');
+    const [ContactNumber,setContactNumber]=useState('');
+     const [password,setPassword]=useState('');
+     
+     const [errMsg,setErrMsg]=useState('');
+     const [success,setSuccess]=useState(false);
 
-    const handleFormSubmit =(values) => {
-     console.log(values);
+
+     const handleFormSubmit = async (values ,{resetForm})  => 
+     { 
+         try {
+            const response =await instance.post(REGISTER_URL,values);
+            console.log(JSON.stringify(response?.data))
+            const roles=response?.data?.roles;
+            setSnackbarOpen(true);
+            resetForm();
+           
+
+
+        }catch (err)
+        {if(!err?.response){
+            setErrMsg('No Server Response');
+        }else if(err.response?.status ===409){
+            setErrMsg('Email Taken');
+        }else {
+            setErrMsg('Registration Failed');
+        }
+     
+    }
+
+    
+
     };
+    const handleSnackbarClose = () => {
+  
+        setSnackbarOpen(false);
+      };
     return (
         <Box m='20px'>
             <Header title="CREATE USER" subtitle="Create a New User Profile" />
-           {} <Formik
+
+           {success && <p>User created successsfuly !</p>} <Formik
             onSubmit={handleFormSubmit}
-            initialValues={initialValues}
+           initialValues={initialValues}
             validationSchema={userSchema}
              >
-                {({ values,errors,touched,handleBlur,handleChange,handleSubmit,}) => (
+                {({ values,errors,touched,handleBlur,handleChange,handleSubmit,resetForm}) => (
                    <form onSubmit={handleSubmit}>
                     <Box display= 'flex'  gap='30px' flexDirection={'column'} 
                     sx={{
@@ -54,28 +94,17 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
-                label="First Name"
+                label="User Name"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.firstName}
-                name="firstName"
-                error={!!touched.firstName && !!errors.firstName}
-                helperText={touched.firstName && errors.firstName}
+                value={values.username}
+                name="username"
+                error={!!touched.username && !!errors.username}
+                helperText={touched.username && errors.username}
                 sx={{ gridColumn: "span 2" }} />
 
 
-<TextField
-                        fullWidth
-                        variant="filled"
-                        type="text"
-                        label="Last Name"
-                        onBlur={handleBlur}
-                        onChange={handleChange}
-                        value={values.lastName}
-                        name="lastName"
-                        error={!!touched.lastName && !!errors.lastName}
-                        helperText={touched.lastName && errors.lastName}
-                        />
+
 <TextField
                         fullWidth
                         variant="filled"
@@ -99,10 +128,10 @@ const Form = () => {
                         label="Contact number"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.contact}
-                        name="contact"
-                        error={!!touched.contact && !!errors.contact}
-                        helperText={touched.contact && errors.contact}
+                        value={values.ContactNumber}
+                        name="ContactNumber"
+                        error={!!touched.ContactNumber && !!errors.ContactNumber}
+                        helperText={touched.ContactNumber && errors.ContactNumber}
                         sx={{ gridColumn:"span 4"}} />
 
                         
@@ -124,18 +153,22 @@ const Form = () => {
 
 
 
+
+
+
 <TextField
                         fullWidth
                         variant="filled"
-                        type="text"
-                        label="Adress2"
+                        type="password"
+                        label="password"
                         onBlur={handleBlur}
                         onChange={handleChange}
-                        value={values.address2}
-                        name="address2"
-                        error={!!touched.address2 && !!errors.address2}
-                        helperText={touched.address2 && errors.address2}
+                        value={values.password}
+                        name="password"
+                        error={!!touched.password && !!errors.password}
+                        helperText={touched.password && errors.password}
                         sx={{ gridColumn:"span 4"}} />
+
 
 
                     </Box>
@@ -146,11 +179,29 @@ const Form = () => {
                 Create New User
               </Button>
               </Box>
-                   </form>
+ </form>
                 )}
                 
 
             </Formik>
+
+
+
+<Snackbar
+open={snackbarOpen}
+autoHideDuration={3000}
+onClose={handleSnackbarClose}
+>
+<MuiAlert
+  elevation={6}
+  variant="filled"
+  onClose={handleSnackbarClose}
+  severity="success"
+>
+  User addesd successfully
+</MuiAlert>
+</Snackbar>
+
 
         </Box>
     );

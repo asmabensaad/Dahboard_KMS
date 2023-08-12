@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 //import { ProSidebar} from 'react-pro-sidebar';
 import { ProSidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import { useNavigate } from 'react-router-dom';
@@ -24,6 +24,11 @@ import { Map, SecurityUpdateOutlined } from "@mui/icons-material";
 import { LogoutOutlined } from "@mui/icons-material";
 import {Source} from '../../auth2/Index';
 import {Login}from '../../auth2/Login';
+import Register from "../../auth2/Register";
+import {Logout }from "../../auth2/Logout";
+import { AuthProvider } from "../../context/AuthProvider";
+
+import { useUser } from "../Profile/UserProvider";
 
 const Item =({title,to,icon,selected,setSelected})=> {
   const theme=useTheme();
@@ -42,8 +47,14 @@ const Item =({title,to,icon,selected,setSelected})=> {
 const Sidebar =() => {
     const theme=useTheme ();
     const colors =tokens(theme.palette.mode);
+    const { user } = useUser();
+
     const [isCollapsed, setIsCollapsed]=useState(false);
     const [selected , setSelected] =useState("Dashboard");
+    useEffect(() => {
+      console.log(user);
+
+    },[user]);
     return (
      <Box sx={{
 
@@ -112,11 +123,13 @@ const Sidebar =() => {
                     fontWeight='bold'
                     sx={{ m : "10px 0 0 0"}}
                     >
-                        Asma
+                        
+                        {user.userName}
                         </Typography>
                     <Typography variant='h5'
                     color={colors.greenAccent[100]}
-                    >  Ben Saad
+                    >  
+                    {user.email}
                     </Typography>
                 </Box>
             </Box>
@@ -204,14 +217,14 @@ const Sidebar =() => {
 
               <Item
               title="Logout "
-              to="/login"
+              to="/logout"
               icon={<LogoutOutlined/>}
               selected={selected}
               setSelected={setSelected}
               />
               <Item
               title="Register "
-              to="/Source"
+              to="/auth2"
               icon={<LoginOutlined/>}
               selected={selected}
               setSelected={setSelected}

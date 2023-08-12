@@ -22,6 +22,7 @@ function Index() {
       <div className='app'>
         <Sidebar />
         <main className='content'>
+         
           <Topbar />
             <Outlet/>
         </main>

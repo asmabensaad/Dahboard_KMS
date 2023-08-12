@@ -1,60 +1,71 @@
 import { Box ,useTheme } from "@mui/material";
-
+import { useState,useEffect } from "react";
 import { tokens } from "../../theme";
 import { number } from "yup";
 import { DataGrid ,GridToolbar } from "@mui/x-data-grid";
-import { mockDataContacts} from "../../data/mockData";
-import Header from "../../components/Header";
 
+import Header from "../../components/Header";
+import axios from "axios";
 const Contacts =() => {
 const theme =useTheme();
 const colors=tokens(theme.palette.mode);
 const columns=[
-    {field: 'id' , headerName:'ID',flex:0.5},
-
-    { field:'registrarId' ,
-     headerName:'Registred ID',
+    {field: 'id' , headerName:'Id',flex:1},
+    { field:'username' ,
+     headerName:'username',
      flex :1 ,
      cellClassName:'name-column--cell' },
-
-     { field:'name' ,
-     headerName:'Name',
-     flex :1 ,
-     cellClassName:'name-column--cell' },
-
-     { field: 'age' ,
-     headerName:'Age',
-     type :number,
-     headerAlign:'left',
-     align :'left'
-     },
-
-     { field:'phone' ,
-     headerName:'Phone Number',
+     { field:'contactNumber' ,
+     headerName:'contactNumber',
      flex :1 
      },
 
      { field:'email' ,
-     headerName:'Email',
+     headerName:'email',
      flex :1 
      },
+
+     
       
-     { field:'address' ,
-     headerName:'Adress',
-     flex :1 
-     },
-
-
-     { field:'city' ,
-     headerName:'City',
-     flex :1 
-     },
-     {
-        field: "zipCode",
-        headerName: "Zip Code",
-        flex: 1,
-      },
 ];
+
+    const [errMsg,setErrMsg]=useState('');
+    
+    const [rows, setRows] = useState([]);
+  
+    
+        useEffect(() => {
+
+            const displayData =async (e) =>{
+              
+                try{
+                   
+                        const response =await axios.get('http://localhost:2023/api/Users/GetAllUsers',{
+                            headers:{
+                                Authorization:`Bearer ${localStorage.getItem("token")}`
+                            }
+                        });
+                       
+                        const data = response?.data || [];
+                        
+                        setRows(data);
+                      
+            
+                    }catch (err)
+                    {
+                        if(!err?.response){
+                        setErrMsg('No Server Response');
+                    }else if(err.response?.status ===409){
+                       setErrMsg('NO DATA TO DISPLAY')
+                    }
+                 
+                }
+            };
+               displayData();
+            },[]);
+
+
+
         return (
       <Box m='20px'>
     <Header title ="Contacts" subtitle="List Of Contacts" />
@@ -87,7 +98,7 @@ const columns=[
         }
 
     }}>
-        <DataGrid rows={mockDataContacts} columns={columns}  components={{Toolbar:GridToolbar}}/>
+        <DataGrid rows={rows} columns={columns}  components={{Toolbar:GridToolbar}}/>
     </Box>
 </Box>
 

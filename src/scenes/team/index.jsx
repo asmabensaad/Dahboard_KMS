@@ -1,76 +1,169 @@
-import { Box ,Typography,useTheme } from "@mui/material";
+import { Box ,Typography,useTheme,Button } from "@mui/material";
 //import { Icon, getIconUtilityClass, iconClasses} from '@mui/icons-material';
-import { DataGrid } from "@mui/x-data-grid";
+import { DataGrid ,GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
-import { mockDataTeam } from "../../data/mockData";
-/*import { AdminPanelSettingsOutlinedIcon} from "@mui/icons-material/AdminPanelSettingsOutlinedIcon";
-import { LockOpenOutlinedIcon} from "@mui/icons-material/LockOpenOutlinedIcon";
-import { SecurityOutlinedIcon } from "@mui/icons-material/SecurityOutlinedIcon";*/
+import {Alert} from "@mui/material";
 import Header from "../../components/Header";
 import { number } from "yup";
+import axios from "axios";
+import { useState,useEffect } from "react";
+import UpdateTeam from './updateTeam';
+import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+
+
+
+
 const Team =() => {
 const theme =useTheme();
 const colors=tokens(theme.palette.mode);
+const [snackbarOpen, setSnackbarOpen] = useState(false);
+const [setMessage,setErrMsg]=useState('');
+const [rows, setRows] = useState([]);
+const [selectedRow, setSelectedRow] = useState(null);
+
+const [users,setUsers]=useState([]);
+
+
+const handleUpdateTeam = (row) => {
+    setSelectedRow(row);
+};
+
+const Cancel = ()=>{
+    setSelectedRow(null)
+}
+
+useEffect(() => {
+    displayData();
+},[]);
+
+const displayData =async () =>{
+  
+    try{
+       
+            const response =await axios.get('http://localhost:2023/api/Users/GetAllUsers',{
+                headers:{
+                    Authorization:`Bearer ${localStorage.getItem("token")}`
+                }
+            });
+            setUsers(response.data);
+
+            
+            const data = response?.data || [];
+          
+            setRows(data);
+          
+
+        }catch (err)
+        {
+            if(!err?.response){
+            setErrMsg('No Server Response');
+        }else if(err.response?.status ===409){
+           setErrMsg('NO DATA TO DISPLAY')
+        }
+     
+    }
+};
+   
+
+
+const deleteUserData =async ( row ) =>{
+  
+       try{
+        const response =await axios.delete(`http://localhost:2023/api/Users/DeleteUser?userId=${row.id}`,{
+            headers:{
+               
+                Authorization:`Bearer ${localStorage.getItem("token")}`,
+            },  
+          
+            
+           },
+    
+        );
+        
+        if(response.status==200){
+            
+            setSnackbarOpen(true);
+            setMessage("user deleted successfully");
+            
+        }
+        
+
+}catch(error){
+    console.error('error deleting user:',error);
+}
+
+};
+
+
+
+const handleDeleteTeam=  (row) => {
+    
+    try { 
+         deleteUserData(row);
+        setRows(prevRows => prevRows.filter(prevRow =>prevRow.id !==row.id));
+    } catch(error)
+    {
+        console.error('Error deleting user:', error);
+    }
+};
+
+
 const columns=[
-    {field: 'id' , headerName:'ID'},
-    { field:'name' ,
-     headerName:'Name',
+    {field: 'id' , headerName:'Id',flex:1,UpdateTeam},
+    { field:'username' ,
+     headerName:'username',
      flex :1 ,
      cellClassName:'name-column--cell' },
-
-     { field: 'age' ,
-     headerName:'Age',
-     type :number,
-     headerAlign:'left',
-     align :'left'
-     },
-
-     { field:'phone' ,
-     headerName:'Phone Number',
+     { field:'contactNumber' ,
+     headerName:'contactNumber',
      flex :1 
      },
 
      { field:'email' ,
-     headerName:'Email',
+     headerName:'email',
      flex :1 
      },
+
+  
       
-     { field:'access' ,
-     headerName:'Access Level',
+     { field:'Manage the Team' ,
+     headerName:'Manage Team',
      flex :1 ,
-     renderCell:({ row : { access}}) => {
-        return(
-        <Box
-        width='60%'
-        m='0 auto'
-        p='5px'
-        display='flex'
-        justifyContent='center'
-        backgroundColor={
-            access ==='admin'
-            ? colors.greenAccent[600]
-            : colors.greenAccent[700]
-            }
-            borderRadius='4px'
-            >
-                {access === 'admin' }
-                {access === 'manager' }
-                {access === 'user'}
-                <Typography color={colors.grey[100]} sx={{ ml:'5px'}}>
-                    {access}
-                </Typography>
 
-
-
-            </Box>
-        );
-     },
+     sortable: false,
+     filterable: false,
+     renderCell: (params) => (
+         <>
+             <Button variant="outlined" color="secondary" onClick={() => handleUpdateTeam(params.row)}>Update</Button>
+             <Button variant="outlined" color="secondary" onClick={() => handleDeleteTeam(params.row)} >Delete</Button>
+         </>
+     ),
+     
     
     },
 ];
+
+
+let navigate = useNavigate();
+const routeChange = () => {
+    navigate('/updateTeam');
+}
+
+const handleSnackbarClose = () => {
+  
+    setSnackbarOpen(false);
+  };
+
 return (
+
+ 
+
 <Box m='20px'>
     <Header title ="TEAM" subtitle="Managing the team Members" />
+    {selectedRow ? <UpdateTeam onGoBack={Cancel} formData={selectedRow} />:
     <Box m='40px 0 0 0' height='75vh' sx ={{
         '& .MuiDataGrid--root': {
             border:'none',
@@ -93,13 +186,38 @@ return (
         '& .MuiDataGrid-footerContainer': {
             borderTop:'none',
             backgroundColor:colors.blueAccent[700]
+        },
+
+        '& .MuiDataGrid-toolbarContainer .MuiButton-text': {
+            color: `${colors.grey[100]} !important`,
+
         }
+
     }}>
-        <DataGrid rows={mockDataTeam} columns={columns} />
+        <DataGrid rows={rows} columns={columns}   />
     </Box>
+}
+
+
+
+<Snackbar
+open={snackbarOpen}
+autoHideDuration={3000}
+onClose={handleSnackbarClose}
+>
+<MuiAlert
+  elevation={6}
+  variant="filled"
+  onClose={handleSnackbarClose}
+  severity="success"
+>
+  User deleted successfully
+</MuiAlert>
+</Snackbar>
+
+
+
 </Box>
-
-
 
 
 );

@@ -8,13 +8,14 @@ import axios from "../api/axios";
 import instance from "../api/axios";
 import { Routes, Route, Navigate } from "react-router-dom";
 import React from 'react'
+import { Button } from "@mui/material";
 const USERNAME_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const EMAIL_REGEX=/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = 'api/Authenticate/register';
 
 
-const Register = () => {
+const Register = (props) => {
 
     const userRef=useRef();
     const errRef=useRef();
@@ -110,7 +111,7 @@ const Register = () => {
             <section>
                 <h1> Success ! </h1>
                 <p>
-                   <Link to='Login'>Sign In</Link>
+                <Button onClick={props.toggle}>Sign In</Button>
                 </p>  
                 
             </section>
@@ -241,7 +242,7 @@ const Register = () => {
             <p> Already registred? <br />
             <span >
                 
-                <Link to="login">Sign In</Link>
+                <Button onClick={props.toggle}>Sign In</Button>
                 </span>
                 </p>
 
