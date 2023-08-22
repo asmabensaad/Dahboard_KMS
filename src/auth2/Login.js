@@ -118,8 +118,8 @@ const Login = (props) => {
             });
             if(response.status===200)
             {
-                const {email ,userName,Id,contactNumber}=response.data;
-                return{email,userName,Id,contactNumber};
+                const {email ,userName,Id,phoneNumber}=response.data;
+                return{email,userName,Id,phoneNumber};
             }
             else{
                 console.error('failed to fetch user data');

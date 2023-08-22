@@ -41,7 +41,10 @@ const FAQ =() => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                    What are the system requirements for using the dashboard?
+                    The system requirements for our Dashboard are designed to ensure a smooth and secure user experience. 
+                    You'll need a modern web browser, a stable internet connection, and a computer or device with sufficient memory and processing power.
+                     For administrators, we recommend having access to a secure network environment, and we provide guidelines for optimal security configurations. 
+                     Our Dashboard is designed to be user-friendly, but if you have specific technical requirements or questions, please don't hesitate to reach out to our support team for assistance."
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -55,7 +58,10 @@ const FAQ =() => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                    Can I access the dashboard from multiple devices?
+                    Yes, you can typically access the dashboard from multiple devices, provided you have the necessary permissions and access credentials.
+                     Our system is designed to offer flexibility and convenience, allowing authorized users to securely access the dashboard from different devices such as laptops, desktops, tablets, and mobile phones.
+                      This enables you to manage your key and secret resources from wherever you are, ensuring efficient and responsive control over your security assets. 
+                      However, please remember to follow best practices for maintaining the security of your access credentials and ensure that your devices adhere to recommended security measures to protect sensitive data.
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -72,7 +78,10 @@ const FAQ =() => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                    Can I export data from the dashboard?
+                    Yes, you can typically export data from the dashboard, depending on the features and capabilities of your specific Key Management Server (KMS) software. 
+                    Many KMS dashboards include functionality for exporting data and reports to various formats such as CSV (Comma-Separated Values), JSON (JavaScript Object Notation), or Excel spreadsheets.
+
+
                     </Typography>
                 </AccordionDetails>
             </Accordion>
@@ -90,23 +99,10 @@ const FAQ =() => {
                 </AccordionSummary>
                 <AccordionDetails>
                     <Typography>
-                    we prioritize the security and protection of your data through the implementation of a robust Key Management System (KMS). 
-                    Our KMS ensures the secure generation, storage, and management of encryption keys used to safeguard your sensitive information. 
-                    Here are the key aspects of our policy:
-
-
-                    Encryption and Key Generation: We employ strong encryption algorithms to protect your data during transit and at rest.
-                     Our KMS generates unique encryption keys that are used to encrypt and decrypt your data, providing an additional layer of security.
-
-                   Key Storage and Management: The encryption keys are securely stored within our KMS infrastructure. We follow industry best practices and employ stringent access controls to prevent unauthorized access to these keys. Our KMS also tracks key usage and provides audit logs for accountability.
-
-                  key Rotation: To enhance security, our KMS supports key rotation, allowing for the periodic renewal of encryption keys. This ensures that even if a key is compromised, the exposure is limited and the impact is minimized.
-
-                   Access Controls and Authorization: Only authorized personnel within our organization have access to the KMS. We enforce strict access controls and authentication mechanisms to ensure that only authorized individuals can manage and use the encryption keys.
-
-                   Compliance and Auditing: Our KMS adheres to industry standards and regulatory requirements concerning data protection and privacy. We conduct regular audits to ensure compliance and continuously improve our security measures.
-
-                  Disaster Recovery and Backup: We have implemented comprehensive disaster recovery plans and backup mechanisms to safeguard the availability and integrity of your data. Our KMS infrastructure is designed to handle potential failures and maintain the continuity of key management operations.
+                    We prioritize data security through our robust Key Management System (KMS).
+                    It employs strong encryption, generates unique keys, securely stores them, and enables periodic key rotation. 
+                    Access is strictly controlled, compliant with regulations, and subject to regular auditing. 
+                    Disaster recovery and backup mechanisms ensure data availability and integrity
                     </Typography>
                 </AccordionDetails>
             </Accordion>

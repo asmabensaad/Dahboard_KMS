@@ -33,13 +33,13 @@ const Topbar =() => {
             if(response.status ===200){
                 
              
-                const { Id, userName, email, PhoneNumber } = response.data;
+                const { userId, userName, email, phoneNumber } = response.data;
                 navigate('/user-profile', {
                     state:{ 
-                        Id,
+                        userId,
                         userName,
                         email,
-                        PhoneNumber,
+                        phoneNumber,
                     }
 
                   

@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
 
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 
@@ -117,6 +118,7 @@ const columns=[
      headerName:'username',
      flex :1 ,
      cellClassName:'name-column--cell' },
+     
      { field:'contactNumber' ,
      headerName:'contactNumber',
      flex :1 
@@ -137,11 +139,11 @@ const columns=[
      filterable: false,
      renderCell: (params) => (
          <>
-             <Button variant="outlined" color="secondary" onClick={() => handleUpdateTeam(params.row)}>Update</Button>
-             <Button variant="outlined" color="secondary" onClick={() => handleDeleteTeam(params.row)} >Delete</Button>
+             <Button variant="contained" color="success" onClick={() => handleUpdateTeam(params.row)}>Update</Button>
+             <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDeleteTeam(params.row)} >Delete</Button>
          </>
      ),
-     
+    
     
     },
 ];

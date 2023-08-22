@@ -173,6 +173,13 @@ const Sidebar =() => {
               selected={selected}
               setSelected={setSelected}
               />
+               <Item
+              title="Create New Secret"
+              to="/createsecret"
+              icon={<SecurityUpdateOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+              />
               
               <Item
               title="Profile Form"

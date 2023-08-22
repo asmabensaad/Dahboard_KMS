@@ -7,7 +7,7 @@ import Header from "../../components/Header";
 import instance from "../../api/axios";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
-
+import SendIcon from '@mui/icons-material/Send';
 const REGISTER_URL = 'api/authenticate/register';
 const initialValues ={
     username:'',
@@ -175,7 +175,7 @@ const Form = () => {
 
 
                     <Box display="flex" justifyContent="end" mt="20px">
-              <Button type="submit" color="secondary" variant="contained">
+              <Button type="submit" color="success" variant="contained" endIcon={<SendIcon />}>
                 Create New User
               </Button>
               </Box>

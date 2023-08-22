@@ -1,18 +1,50 @@
 import React, { useEffect, useState } from "react";
 import { useUser } from "./UserProvider";
 import { useLocation } from 'react-router-dom';
+import './profile.css';
 const UserProfile =() => {
     const Location=useLocation();
     const userData=Location.state;
    return (
-    <div>
-      <h2>User Profile</h2>
-      <p>Id:{userData.Id}</p>
-      <p>Name: {userData.userName}</p>
-      <p>Email: {userData.email}</p>
+    
+    <div className='upc'>
       
-      <p>contact Number:{userData.PhoneNumber}</p>
-    </div>
+      <h2>User Information</h2>
+      <div className="gradiant"> 
+
+      <p>Name: {userData.userName}</p>
+      </div>
+     
+     <div className="profile-down">
+      <p>Email: {userData.email}</p>
+      </div>
+
+      <div className="gradiant"> 
+
+      <p>Id:{userData.userId}</p>
+      </div>
+
+      <div className="profile-down">
+      
+      <p>Phone Number:{userData.phoneNumber}</p>
+      </div>
+
+
+      
+         
+         <div className='upc'>
+         <p>
+         <div className="profile-description">
+          <h2> Description</h2>
+          </div>
+  
+         </p>
+         </div>
+      </div>
+
+      
+     
+  
   );
 };
 

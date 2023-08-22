@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { tokens } from "../../theme";
 import { number, object } from "yup";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { secretData } from "../../data/mockData";
 import Header from "../../components/Header";
@@ -11,8 +11,11 @@ import './ListSecret.css';
 import { useState, useEffect } from "react";
 import UpdateSecret from "../updateSecret";
 import DetailsSecret from "./DetailsSecret";
+import DeleteIcon from '@mui/icons-material/Delete';
+import Snackbar from '@mui/material/Snackbar';
+import SendIcon from '@mui/icons-material/Send';
 import { useParams } from "react-router-dom";
-
+import MuiAlert from '@mui/material/Alert';
 
 const Secrets = () => {
     const theme = useTheme();
@@ -21,12 +24,13 @@ const Secrets = () => {
     const [selectedRow, setSelectedRow] = useState(null);
     const [rows, setRows] = useState([]);
     const [errMsg, setErrMsg] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
    
     const [selectedRowtoDetail, setSelectedRowToDetail] = useState(null);
    
     const handleShowDetailsSecret =  async (row) =>{
        
-   
+        setSelectedRowToDetail(row);
         navigate(`/secret/details/${row.key}`)
     };
 
@@ -37,18 +41,49 @@ const Secrets = () => {
     const onGoBack = () => {
         setSelectedRow(null)
     }
+    const handleSnackbarClose = () => {
 
+        setSnackbarOpen(false);
+      };
+
+
+    const handleDeleteSecret=  async () => {
+        if (!selectedRow) {
+            // No selected row, so there's nothing to delete.
+            console.error('No selected row to delete.');
+            return;
+        }
+
+        try {
+            const deleteUrl = `http://localhost:2000/api/v1.0/kms/Secrets/DeleteSecret?alias=${selectedRow.key}`;
+
+            await axios.delete(deleteUrl, {
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json',
+                },
+            });
+        
+     
+            setSelectedRow(null);
+        
+         } catch (error) {
+                // Handle any errors that occur during the delete operation.
+                console.error('Error deleting secret content:', error);
+         }
+
+    }
     const columns = [
         {
             field: 'key',
-            headerName: 'key',
+            headerName: 'secret',
             flex: 1, UpdateSecret,DetailsSecret,
             cellClassName: 'name-column--cell'
         },
 
         {
             field: 'management',
-            headerName: 'manage secret',
+            headerName: 'Manage secret',
             flex: 1,
 
             sortable: false,
@@ -57,8 +92,10 @@ const Secrets = () => {
                 <>
 
                  <Button variant="outlined" color="secondary" onClick={() => handleShowDetailsSecret(params.row)}>Show Details</Button>
+                 <Link to={`/secret/details/${params.row.key}`} style={{ textDecoration: 'none' }}></Link>
 
-                    <Button variant="outlined" color="secondary" onClick={() => handleUpdateSecret(params.row)}>Update</Button>
+                 <Button variant="contained" color="success" onClick={() => handleUpdateSecret(params.row)}>Update</Button>
+                 <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDeleteSecret()}>Delete</Button>
               
                 </>
             ),
@@ -151,10 +188,32 @@ useEffect(() => {
 
                     <Box>
                         <DataGrid rows={rows} columns={columns} components={{ Toolbar: GridToolbar }} />
-                        <Button className='button' variant="outlined" color="success" onClick={routeChange}>Create New Secret</Button>
+                        <Button className='button' variant="contained" color="success"  onClick={routeChange}>Create New Secret</Button>
                     </Box>
                 </Box>
             }
+
+
+
+
+
+
+<Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <MuiAlert
+          elevation={6}
+          variant="filled"
+          onClose={handleSnackbarClose}
+          severity="success"
+        >
+          secret deleted successfully
+        </MuiAlert>
+      </Snackbar>
+
+
 
 
         </Box>

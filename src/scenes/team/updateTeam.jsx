@@ -10,6 +10,7 @@ import Header from "../../components/Header";
 import { useState } from "react";
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert from '@mui/material/Alert';
+import SendIcon from '@mui/icons-material/Send';
 import * as yup from "yup";
 
 
@@ -51,6 +52,7 @@ const UpdateTeam = ({ formData, onGoBack }) => {
                  
                  Authorization:`Bearer ${localStorage.getItem("token")}`,
              },
+          
  
         
          });
@@ -184,7 +186,7 @@ const handleSnackbarClose = () => {
                         <Button type="button" onClick={onGoBack} color="info" variant="contained">
                             Cancel
                         </Button>
-                        <Button type="submit" color="secondary" variant="contained" >
+                        <Button type="submit" color="success" variant="contained"  endIcon={<SendIcon />} >
                             Update Data
                         </Button>
                     </Box>
