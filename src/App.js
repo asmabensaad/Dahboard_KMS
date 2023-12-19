@@ -15,8 +15,9 @@ import DetailsSecret from "./scenes/secrets/DetailsSecret.jsx";
 import Logout from "./auth2/Logout.js";
 import { useUser } from "./scenes/Profile/UserProvider.jsx";
 import UserProfile from "./scenes/Profile/UserProfile.jsx";
-
-
+import Encryption from "./scenes/Encryption/index.jsx";
+import Decryption from "./scenes/Decryption/index.jsx";
+import PasswordResetForm from "./resetPassword/resetPassword.jsx";
 function App() {
   const { user } = useUser()
   return (
@@ -38,6 +39,8 @@ function App() {
        <Route path="/createsecret" element={<CreateSecret />} />
        <Route path="/updateSecret" element={<UpdateSecret />} />
        <Route path="/secret/details/:key" element={<DetailsSecret/>} />
+       <Route path="/encryption" element={<Encryption />} />
+       <Route path="/decryption" element={<Decryption />} />
        <Route path="/user-profile" element={<UserProfile />} /> 
       
       </Route>
@@ -45,6 +48,8 @@ function App() {
         <>
         <Route path="auth2" element={<Source />} />
         <Route path="*" element={<Navigate to="/auth2" />} />
+        <Route path="/resetpassword" element={<PasswordResetForm />} />
+        
         </>
       )}
      

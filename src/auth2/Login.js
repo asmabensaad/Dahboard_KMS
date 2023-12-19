@@ -19,6 +19,7 @@ import OutlinedInput from "@mui/material/OutlinedInput";
 import { UserProvider,useUser } from "../scenes/Profile/UserProvider";
 import axios from "axios";
 
+
 const LOGIN_URL = 'api/Authenticate/login';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -30,7 +31,7 @@ const Login = (props) => {
     const errRef = useRef();
     const handleClickShowPassword = () => setShowPassword((show) => !show);
     const {setUser}=useUser();
-
+   
     const usenavigate = useNavigate();
     useEffect(() => {
         sessionStorage.clear();
@@ -41,6 +42,10 @@ const Login = (props) => {
     const [errMsg, setErrMsg] = useState('');
     const [success, setSuccess] = useState(false);
 
+    const handleResetPasswordClick = () => {
+        // Redirect to the password reset form route
+        usenavigate('/resetpassword');
+      };
 
     useEffect(() => {
         const result = EMAIL_REGEX.test(email);
@@ -155,6 +160,26 @@ const Login = (props) => {
                 <form onSubmit={handleSubmit}
 
                 >
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                    
                     <label htmlFor="email">email:</label>
                     <input type="email" id="email" ref={userRef} autoComplete="off" onChange={(e) => setEmail(e.target.value)}
                         value={email}
@@ -184,7 +209,7 @@ const Login = (props) => {
 
                     Forgot Password ? <br />
                     <span className="line">
-                        <a href="#">Reset Password</a>
+                    <Button onClick={handleResetPasswordClick} >Reset Password</Button>
                     </span>
 
                 </p>

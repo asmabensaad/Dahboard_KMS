@@ -147,7 +147,7 @@ const Sidebar =() => {
               variant ='h6'
               color={colors.grey[300]}
               sx={{m:'15px 0 5px 20px'}}
-              > Data</Typography>
+              > Users</Typography>
 
 
 
@@ -167,6 +167,19 @@ const Sidebar =() => {
               setSelected={setSelected}
               />
                <Item
+              title="add user"
+              to="/form"
+              icon={<PersonOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+              />
+
+               <Typography
+              variant ='h6'
+              color={colors.grey[300]}
+              sx={{m:'15px 0 5px 20px'}}
+              > Manage Secrets</Typography>
+               <Item
               title="List of Secrets"
               to="/secrets"
               icon={<SecurityUpdateOutlined />}
@@ -180,11 +193,17 @@ const Sidebar =() => {
               selected={selected}
               setSelected={setSelected}
               />
-              
-              <Item
-              title="Profile Form"
-              to="/form"
-              icon={<PersonOutlinedIcon />}
+                <Item
+              title="Encrypt Data"
+              to="/encryption"
+              icon={<SecurityUpdateOutlined />}
+              selected={selected}
+              setSelected={setSelected}
+              />
+               <Item
+              title="Decrypt Data"
+              to="/decryption"
+              icon={<SecurityUpdateOutlined />}
               selected={selected}
               setSelected={setSelected}
               />

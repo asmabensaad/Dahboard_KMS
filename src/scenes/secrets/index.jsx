@@ -47,29 +47,30 @@ const Secrets = () => {
       };
 
 
-    const handleDeleteSecret=  async () => {
-        if (!selectedRow) {
-            // No selected row, so there's nothing to delete.
-            console.error('No selected row to delete.');
-            return;
-        }
-
+    const handleDeleteSecret=  async (row) => {
+   
         try {
-            const deleteUrl = `http://localhost:2000/api/v1.0/kms/Secrets/DeleteSecret?alias=${selectedRow.key}`;
+            const deleteUrl = `http://localhost:2000/api/v1.0/kms/Secrets/DeleteSecret`;
 
             await axios.delete(deleteUrl, {
                 headers: {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json',
                 },
+                params:{
+                    alias:row.key
+                }
             });
         
      
             setSelectedRow(null);
+        setSnackbarOpen(true);
+
         
          } catch (error) {
                 // Handle any errors that occur during the delete operation.
                 console.error('Error deleting secret content:', error);
+                setSnackbarOpen(false);
          }
 
     }
@@ -95,7 +96,7 @@ const Secrets = () => {
                  <Link to={`/secret/details/${params.row.key}`} style={{ textDecoration: 'none' }}></Link>
 
                  <Button variant="contained" color="success" onClick={() => handleUpdateSecret(params.row)}>Update</Button>
-                 <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDeleteSecret()}>Delete</Button>
+                 <Button variant="contained" color="error" startIcon={<DeleteIcon />} onClick={() => handleDeleteSecret(params.row)}>Delete</Button>
               
                 </>
             ),

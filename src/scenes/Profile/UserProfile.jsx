@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useUser } from "./UserProvider";
 import { useLocation } from 'react-router-dom';
 import './profile.css';
+import Avatar from '@mui/material/Avatar';
 const UserProfile =() => {
     const Location=useLocation();
     const userData=Location.state;
@@ -35,7 +36,7 @@ const UserProfile =() => {
          <div className='upc'>
          <p>
          <div className="profile-description">
-          <h2> Description</h2>
+          <h2> </h2>
           </div>
   
          </p>

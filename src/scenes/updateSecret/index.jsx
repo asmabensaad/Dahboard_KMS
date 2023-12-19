@@ -45,9 +45,7 @@ const UpdateSecret = ({ formData, onGoBack }) => {
 
        },
  
-        body: JSON.stringify({
-          resultObject
-            })
+        body: JSON.stringify(resultObject)
       });
 
       if (response.status === 200 || response.status === 201) {
